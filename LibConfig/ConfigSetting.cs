@@ -10,6 +10,7 @@ namespace LibConfig
     {
         private string _name = "";
         private string _value = "";
+        private string _whitespace = "";
 
         /// <summary>
         /// Gets the name of the setting.
@@ -25,7 +26,9 @@ namespace LibConfig
             set
             {
                 _value = value.Trim();
-                _content = _name + " = " + _value;
+
+                    _content = _whitespace + _name + " = " + _value;
+
             }
         }
 
@@ -38,7 +41,8 @@ namespace LibConfig
         {
             _name = name.Trim();
             _value = value.Trim();
-            _content = _name + " = " + _value;
+            _whitespace = name.Replace(name.TrimStart(), "");
+            _content = _whitespace + _name + " = " + _value;
         }
 
     }

@@ -89,7 +89,7 @@ namespace LibConfig
         /// <summary>
         /// Variable which is represents no section (i.e. top of the page).
         /// </summary>
-        public static readonly ConfigSection None = new ConfigSection();
+        //public static readonly ConfigSection None = new ConfigSection();
 
         /// <summary>
         /// Gets an empty section without a name.

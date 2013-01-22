@@ -41,7 +41,7 @@ namespace LibConfig
             foreach (ConfigSection section in _sections)
             {
                 // Check to see if a section identifier line needs to be added.
-                if (section != ConfigSection.None)
+                if (section.Name != "")
                 {
                     // Make sure there is a blank line between sections.
                     if (previousLine != "")
@@ -69,7 +69,7 @@ namespace LibConfig
         /// <param name="lines"></param>
         public void WriteAllLines(string[] lines)
         {
-            ConfigSection configSection = ConfigSection.None;
+            ConfigSection configSection = ConfigSection.Empty;
 
             CleanDocument();
 
@@ -80,7 +80,7 @@ namespace LibConfig
                 // Checks if the line is a section identifier.
                 if (lineTrim.StartsWith("[") && lineTrim.EndsWith("]"))
                 {
-                    string sectionName = lineTrim = line.TrimStart('[').TrimEnd(']');
+                    string sectionName = lineTrim.TrimStart('[').TrimEnd(']');
                     
                     _sections.Add(configSection);
 
@@ -90,19 +90,19 @@ namespace LibConfig
                 }
 
                 // Checks if the line is a setting.
-                if (lineTrim.Contains("="))
+                if (line.Contains("="))
                 {
-                    int separatorCharIndex = lineTrim.IndexOf('=');
+                    int separatorCharIndex = line.IndexOf('=');
 
-                    string settingName = lineTrim.Substring(0, separatorCharIndex);
-                    string settingValue = lineTrim.Substring(separatorCharIndex + 1, lineTrim.Length - separatorCharIndex - 1);
-                    configSection.AddLine(new ConfigSetting(settingName, settingValue));
+                    string settingName = line.Substring(0, separatorCharIndex);
+                    string settingValue = line.Substring(separatorCharIndex + 1, line.Length - separatorCharIndex - 1);
+                    configSection.Lines.Add((new ConfigSetting(settingName, settingValue)));
 
                     continue;
                 }
 
                 // Line is not a section identifier or setting.
-                configSection.AddLine(new ConfigLine(line));
+                configSection.Lines.Add(new ConfigLine(line));
             }
 
             _sections.Add(configSection);
@@ -114,7 +114,7 @@ namespace LibConfig
         public void CleanDocument()
         {
             _sections.Clear();
-            ConfigSection.None.Lines.Clear();
+            //ConfigSection.None.Lines.Clear();
         }
 
         /// <summary>
@@ -161,12 +161,12 @@ namespace LibConfig
         }
 
         /// <summary>
-        /// Returns the blank section of the document (i.e. top of the page).
+        /// Returns a blank section of the document (i.e. top of the page).
         /// </summary>
         /// <returns></returns>
         public ConfigSection GetSection()
         {
-            return ConfigSection.None;
+            return GetSection("");
         }
 
         /// <summary>
@@ -176,18 +176,17 @@ namespace LibConfig
         /// <returns></returns>
         public ConfigSection GetSection(string sectionName)
         {
-            ConfigSection configSection = ConfigSection.None;
+            ConfigSection configSection = ConfigSection.Empty;
 
-            if (sectionName != "")
+
+            foreach (ConfigSection section in _sections)
             {
-                foreach (ConfigSection section in _sections)
+                if (section.Name == sectionName)
                 {
-                    if (section.Name == sectionName)
-                    {
-                        return section;
-                    }
+                    return section;
                 }
             }
+
             return configSection;
         }
 
@@ -209,20 +208,17 @@ namespace LibConfig
         /// <returns></returns>
         public string GetValue(string sectionName, string settingName)
         {
-            ConfigSection configSection = ConfigSection.None;
+            ConfigSection configSection = ConfigSection.Empty;
 
-            // If the section is not blank, try to find it.
-            if (sectionName != "")
+            foreach (ConfigSection section in _sections)
             {
-                foreach (ConfigSection section in _sections)
+                if (section.Name == sectionName)
                 {
-                    if (section.Name == sectionName)
-                    {
-                        configSection = section;
-                        break;
-                    }
+                    configSection = section;
+                    break;
                 }
             }
+
 
             // Try to find the setting within the section. 
             foreach (ConfigLine line in configSection.Lines)
@@ -255,26 +251,24 @@ namespace LibConfig
         /// <param name="settingValue"></param>
         public void SetValue(string sectionName, string settingName, string settingValue)
         {
-            ConfigSection configSection = ConfigSection.None;
+            ConfigSection configSection = ConfigSection.Empty;
+            bool sectionNotFound = true;
 
-            // If the section is not blank, try to find it.
-            if (sectionName != "")
+            foreach (ConfigSection section in _sections)
             {
-                foreach (ConfigSection section in _sections)
+                if (section.Name == sectionName)
                 {
-                    if (section.Name == sectionName)
-                    {
-                        configSection = section;
-                        break;
-                    }
+                    configSection = section;
+                    sectionNotFound = false;
+                    break;
                 }
+            }
 
-                // If section is not present, create it.
-                if (configSection == ConfigSection.None)
-                {
-                    configSection = new ConfigSection(sectionName);
-                    _sections.Add(configSection);
-                }
+            // If section is not present, create it.
+            if (sectionNotFound)
+            {
+                configSection = new ConfigSection(sectionName);
+                _sections.Add(configSection);
             }
 
             // Try to find the setting within the section.
