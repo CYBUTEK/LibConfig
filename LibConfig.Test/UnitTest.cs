@@ -18,8 +18,6 @@ namespace LibConfig.Test
 
             ConfigDocument document = new ConfigDocument(file);
 
-            ConfigUtilities.
-
             Console.WriteLine("\n\nDOCUMENT\n========");
             Console.WriteLine(String.Join("\n", document.ReadAllLines()));
             Console.ReadKey();
@@ -119,10 +117,10 @@ namespace LibConfig.Test
         public void ConfigSetting()
         {
             ConfigSetting setting = new ConfigSetting("name", "value");
-            Assert.AreEqual("name=value", setting.Content);
+            Assert.AreEqual("name = value", setting.Content);
 
             setting.Value = "test";
-            Assert.AreEqual("name=test", setting.Content);
+            Assert.AreEqual("name = test", setting.Content);
         }
     }
 }

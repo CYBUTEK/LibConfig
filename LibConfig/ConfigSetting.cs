@@ -25,7 +25,7 @@ namespace LibConfig
             set
             {
                 _value = value.Trim();
-                _content = _name + "=" + _value;
+                _content = _name + " = " + _value;
             }
         }
 
@@ -38,7 +38,7 @@ namespace LibConfig
         {
             _name = name.Trim();
             _value = value.Trim();
-            _content = _name + "=" + _value;
+            _content = _name + " = " + _value;
         }
 
     }
