@@ -196,9 +196,9 @@ namespace LibConfig
         /// </summary>
         /// <param name="settingName"></param>
         /// <returns></returns>
-        public string GetSetting(string settingName)
+        public string GetValue(string settingName)
         {
-            return GetSetting("", settingName);
+            return GetValue("", settingName);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace LibConfig
         /// <param name="sectionName"></param>
         /// <param name="settingName"></param>
         /// <returns></returns>
-        public string GetSetting(string sectionName, string settingName)
+        public string GetValue(string sectionName, string settingName)
         {
             ConfigSection configSection = ConfigSection.None;
 
@@ -242,9 +242,9 @@ namespace LibConfig
         /// </summary>
         /// <param name="settingName"></param>
         /// <param name="settingValue"></param>
-        public void SetSetting(string settingName, string settingValue)
+        public void SetValue(string settingName, string settingValue)
         {
-            SetSetting("", settingName, settingValue);
+            SetValue("", settingName, settingValue);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace LibConfig
         /// <param name="sectionName"></param>
         /// <param name="settingName"></param>
         /// <param name="settingValue"></param>
-        public void SetSetting(string sectionName, string settingName, string settingValue)
+        public void SetValue(string sectionName, string settingName, string settingValue)
         {
             ConfigSection configSection = ConfigSection.None;
 

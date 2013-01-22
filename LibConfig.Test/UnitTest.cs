@@ -92,17 +92,17 @@ namespace LibConfig.Test
         public void ConfigDocumentGetSetting()
         {
             ConfigDocument document = new ConfigDocument(file);
-            Assert.AreEqual("value1", document.GetSetting("section1", "key1"));
+            Assert.AreEqual("value1", document.GetValue("section1", "key1"));
         }
 
         [TestMethod]
         public void ConfigDocumentSetSetting()
         {
             ConfigDocument document = new ConfigDocument(file);
-            document.SetSetting("key", "newValue");
-            Assert.AreEqual("newValue", document.GetSetting("key"));
-            document.SetSetting("section1", "key1", "newValue");
-            Assert.AreEqual("newValue", document.GetSetting("section1", "key1"));
+            document.SetValue("key", "newValue");
+            Assert.AreEqual("newValue", document.GetValue("key"));
+            document.SetValue("section1", "key1", "newValue");
+            Assert.AreEqual("newValue", document.GetValue("section1", "key1"));
         }
 
         [TestMethod]
